@@ -1,0 +1,12 @@
+<saml2p:LogoutResponse
+  xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
+  InResponseTo="_3fef1069-d0c6-418a-b68d-6f008a4787e9"
+  Version="2.0"
+  ID="_1c7fb9a0-04a0-0134-cd6f-068d68dd383d"
+  IssueInstant="2016-05-25T12:14:10Z">
+  <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://testi.apro.tunnistus.fi/idp1</saml2:Issuer>
+  <saml2p:Status xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+    <saml2p:StatusCode xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" Value="urn:oasis:names:tc:SAML:2.0:status:Success" />
+    <saml2p:StatusMessage xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">Successfully logged out from service</saml2p:StatusMessage>
+  </saml2p:Status>
+</saml2p:LogoutResponse>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" entityID="https://testi.apro.tunnistus.fi/idp1"><ds:Signature>
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+<ds:Reference URI="">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+<ds:DigestValue>U7ZPeCThOoJyfKlLr7PjHKQoq34DVo9SpOs4+2MEjuo=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue>
+vdkI6BhdB++4WgZrGCu8gpQBG9RE678LHnsFWosnTV1YwAVoSXeSrPytIfWjA7Hb6/P5dSbisTsR
+PlW7YpY3z25V980ik3AoUGFO6rQ7s4Bw5gRMgBlLT+nevJctGcDxu2KxZfBd+sO65lDvnjVkId21
+Km3/Gr9LaK3fz2ThvtRqKhwpWdGKFWdHvezGnMViv7zr5GG1bvpCvltshAEJYmda2/giU3MeLt1Q
+xogsTDsHiSYwd8evai1EpUxmNJIzZBS884qYwSkHuNRDMpJaeKVW40fetFkeao7Z/Sd1Rahzz6ls
+xWtKU3UP0lp5UxchI7GB77NuMHs0BN/s7OJTKn6gKNysmqIX+8UzcAMq5oCbZ4NsdbSIh31vKZmH
+/2AEOIinFuYxALhWL853gOvlFAwFsFUt3+q3gPqqknmiUo++jjINcyIIZsATGObIc3Q+1c3EtXUK
+aMeIBeclYmAOgxAwOAPwo6ANymFbAa25UfrAGymzeSrhf2GEsh87HGXK
+</ds:SignatureValue>
+<ds:KeyInfo>
+<ds:KeyValue>
+<ds:RSAKeyValue>
+<ds:Modulus>
+2xoWwPbtx8CIK3dPAo/LlMKN9TM3YyCZCwpQT7IUjOqkflU1WtT/Up/pnyklKlulOjnaJqlGFx0g
+862kyg2StjoDFqmLILU38gNn+9KTxRD1V6otSgarXAZUqCjfpCBmrx8h2j9iAkIDor2Hn/gbFSlM
+ornR7phKGCNqZTRQLKKIdjN3D/M7ZjZB2Uisb0nzN6vVNUyZmCsaoNfdrjbqq6lRnQFdd7jVNBdw
+TmAXJpUNkZb6o26gTMUSmpMFiCRR6jONkj0FK7EcmiTrYegrJy2gukTcmUyEyMuyCuj4prEDvwDj
+w14s5KWUvH7q+MGvjz7JNpLPAPISv5VLzKn9j/0WAvJ5BKzZAI34Owb2S1DzuJpozwhZUMdK/93V
+g4GTbyjuWQoZBIFTE7gBLWrdhnkkuClmPtfLxDiCpw2gHV5i0AiKL4mDzr7PeR6E2K8CLK0WKWwu
+JupFLroO6oQsRHMuwTLh4Wu8NT7xtGghqRnxZXh0Wga/m4sC3Xki1Klv
+</ds:Modulus>
+<ds:Exponent>AQAB</ds:Exponent>
+</ds:RSAKeyValue>
+</ds:KeyValue>
+<ds:X509Data>
+<ds:X509Certificate>
+MIIHCjCCBPKgAwIBAgIEDB53hzANBgkqhkiG9w0BAQsFADB4MQswCQYDVQQGEwJGSTEhMB8GA1UE
+ChMYVmFlc3RvcmVraXN0ZXJpa2Vza3VzIENBMRowGAYDVQQLExFQYWx2ZWx1dmFybWVudGVldDEq
+MCgGA1UEAxMhVlJLIENBIGZvciBTZXJ2aWNlIFByb3ZpZGVycyAtIEczMB4XDTE5MDExNTExMTUw
+MFoXDTIxMDExNDIxNTk1OVowga0xCzAJBgNVBAYTAkZJMRAwDgYDVQQIEwdGaW5sYW5kMREwDwYD
+VQQHEwhIZWxzaW5raTEeMBwGA1UEChMVVmFlc3RvcmVraXN0ZXJpa2Vza3VzMRgwFgYDVQQLEw9U
+ZXN0aXZhcm1lbnRlZXQxEjAQBgNVBAUTCTAyNDU0MzctMjErMCkGA1UEAxMibWV0YWRhdGEtc2ln
+bmluZy5hcHJvLnR1bm5pc3R1cy5maTCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBANsa
+FsD27cfAiCt3TwKPy5TCjfUzN2MgmQsKUE+yFIzqpH5VNVrU/1Kf6Z8pJSpbpTo52iapRhcdIPOt
+pMoNkrY6AxapiyC1N/IDZ/vSk8UQ9VeqLUoGq1wGVKgo36QgZq8fIdo/YgJCA6K9h5/4GxUpTKK5
+0e6YShgjamU0UCyiiHYzdw/zO2Y2QdlIrG9J8zer1TVMmZgrGqDX3a426qupUZ0BXXe41TQXcE5g
+FyaVDZGW+qNuoEzFEpqTBYgkUeozjZI9BSuxHJok62HoKyctoLpE3JlMhMjLsgro+KaxA78A48Ne
+LOSllLx+6vjBr48+yTaSzwDyEr+VS8yp/Y/9FgLyeQSs2QCN+DsG9ktQ87iaaM8IWVDHSv/d1YOB
+k28o7lkKGQSBUxO4AS1q3YZ5JLgpZj7Xy8Q4gqcNoB1eYtAIii+Jg86+z3kehNivAiytFilsLibq
+RS66DuqELERzLsEy4eFrvDU+8bRoIakZ8WV4dFoGv5uLAt15ItSpbwIDAQABo4IB5DCCAeAwHwYD
+VR0jBBgwFoAUZQToLZLnyyqrVxWoZSqq+rcWdPYwHQYDVR0OBBYEFB6MqlaedT+GywDK0+drQTk7
+bI7LMA4GA1UdDwEB/wQEAwIGwDCB1wYDVR0gBIHPMIHMMAgGBgQAj3oBBzCBvwYJKoF2hAUBCiIB
+MIGxMCcGCCsGAQUFBwIBFhtodHRwOi8vd3d3LmZpbmVpZC5maS9jcHMzMy8wgYUGCCsGAQUFBwIC
+MHkad1Zhcm1lbm5lcG9saXRpaWtrYSBvbiBzYWF0YXZpbGxhIC0gQ2VydGlmaWthdCBwb2xpY3kg
+ZmlubnMgLSBDZXJ0aWZpY2F0ZSBwb2xpY3kgaXMgYXZhaWxhYmxlIGh0dHA6Ly93d3cuZmluZWlk
+LmZpL2NwczMzMA8GA1UdEwEB/wQFMAMBAQAwNwYDVR0fBDAwLjAsoCqgKIYmaHR0cDovL3Byb3h5
+LmZpbmVpZC5maS9jcmwvdnJrc3AzYy5jcmwwagYIKwYBBQUHAQEEXjBcMDAGCCsGAQUFBzAChiRo
+dHRwOi8vcHJveHkuZmluZWlkLmZpL2NhL3Zya3NwMy5jcnQwKAYIKwYBBQUHMAGGHGh0dHA6Ly9v
+Y3NwLmZpbmVpZC5maS92cmtzcDMwDQYJKoZIhvcNAQELBQADggIBAD09UfDS/YYFdnGLmuB/YXS3
+OR3jYmfDt3ZF+elek8HAm6qwJXHBkfQfAioFeI9JMa9LrOWAzCAGEeg2q2noWhUYEQcy3NwztWZz
+AMhXu6F6d1kua80lZ8YNOeCcbJ9a2LdEZR10g9JFdQdkVy3R19AyKbYwNaEZod/L2o34HvmT+oYI
+pOFhuD392Qp3bkgD6MYcWscWTPvFPVjlQNXjZ8a3/XssdYq1MxuUcWdZ3DQ/jdIQEOWfE/fZ8tI8
+XIaZpsJjLEcbJ26DBxrGtvscdSrpFVrZO3Y1T2WE8NfDuZCmMczNBR1Guisv94B4X1L/TiPBKo6r
+2JhepXLXKuvn/oHf7WjKdOsjmGtBLcQvcAqmtf0Nq+95Am6p+ZFlfIfY7ezOL+W3HaM2F552DC22
+TY4F83pz3NidvXoldrJfXRSJCZEovj4p0Lcj0azGHFxY4CgpfbVO9iNRMer3o/5uB/fuVTw9Ang+
+ZIgC/oNj2tIXjwTns3Z4AIJH2z7TYQo0PiXgx3h3Tn16UBrE14cyfw6/rtNbin3S1rvqhbhr9R50
+MPPS1Z5pKf/Wn5KZhPAAaxhXlYxcmL5jrplu7nlPYquS89Uu0AkrpvHf77Qi+t7xVJCjoTMTsrfo
+2Se+8gu2UQZrqjfPJZ17vKZcsRHTgSs0WFPKC9MS6Zl6U4NGJRZp
+</ds:X509Certificate>
+</ds:X509Data>
+</ds:KeyInfo>
+</ds:Signature>
+    <IDPSSODescriptor WantAuthnRequestsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <Extensions>
+            <mdui:UIInfo>
+                <mdui:DisplayName xml:lang="fi">Suomi.fi-tunnistus, testiympäristö</mdui:DisplayName>
+                <mdui:DisplayName xml:lang="en">Suomi.fi-identification, test environment</mdui:DisplayName>
+                <mdui:DisplayName xml:lang="sv">Suomi.fi-identifikation, testmiljö</mdui:DisplayName>
+                <mdui:Description xml:lang="fi">Suomi.fi-tunnistus, testiympäristö</mdui:Description>
+                <mdui:Description xml:lang="en">Suomi.fi-identification, test environment</mdui:Description>
+                <mdui:Description xml:lang="sv">Suomi.fi-identifikation, testmiljö</mdui:Description>
+                <mdui:Logo height="70" width="752">https://testi.apro.tunnistus.fi/resources/img/logo_fi.svg</mdui:Logo>
+            </mdui:UIInfo>
+        </Extensions>
+        <KeyDescriptor use="signing">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+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
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        <KeyDescriptor use="signing">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+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
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://testi.apro.tunnistus.fi/idp/profile/SAML2/POST/SLO"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SLO"/>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://testi.apro.tunnistus.fi/idp/profile/SAML2/POST/SSO"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SSO"/>
+    </IDPSSODescriptor>
+    <Organization>
+        <OrganizationName xml:lang="fi">Väestörekisterikeskus</OrganizationName>
+        <OrganizationName xml:lang="en">Population Register Centre</OrganizationName>
+        <OrganizationName xml:lang="sv">Befolkningsregistercentralen</OrganizationName>
+        <OrganizationDisplayName xml:lang="fi">Väestörekisterikeskus</OrganizationDisplayName>
+        <OrganizationDisplayName xml:lang="en">Population Register Centre</OrganizationDisplayName>
+        <OrganizationDisplayName xml:lang="sv">Befolkningsregistercentralen</OrganizationDisplayName>
+        <OrganizationURL xml:lang="fi">https://vrk.fi/etusivu</OrganizationURL>
+        <OrganizationURL xml:lang="en">https://vrk.fi/en/frontpage</OrganizationURL>
+        <OrganizationURL xml:lang="sv">https://vrk.fi/sv/framsida</OrganizationURL>
+    </Organization>
+    <ContactPerson contactType="technical">
+        <GivenName>Suomi.fi-tunnistus</GivenName>
+        <SurName>Kayttoonotot</SurName>
+        <EmailAddress>mailto:tunnistus-kayttoonotot@vrk.fi</EmailAddress>
+    </ContactPerson>
+    <ContactPerson contactType="administrative">
+        <GivenName>Suomi.fi</GivenName>
+        <SurName>Palvelupiste</SurName>
+        <EmailAddress>mailto:suomi.fi-palvelupiste@vrk.fi</EmailAddress>
+    </ContactPerson>
+</EntityDescriptor>

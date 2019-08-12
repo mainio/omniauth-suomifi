@@ -1,0 +1,74 @@
+<saml2p:Response
+  Destination="https://www.service.fi/auth/suomifi/callback"
+  ID="_67d4d00b78bc9298c103ce4e87779804"
+  InResponseTo="_ddbbb11f-6c0f-4c9b-8e82-1c7ae7902d64"
+  IssueInstant="2019-08-10T13:03:46.695Z"
+  Version="2.0"
+  xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
+  <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://testi.apro.tunnistus.fi/idp1</saml2:Issuer>
+  <saml2p:Status>
+    <saml2p:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+  </saml2p:Status>
+  <saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" ID="_d97d08fe7e40aec4ae9e46cdd8fe5f1b" IssueInstant="2019-08-10T13:03:46.695Z" Version="2.0">
+    <saml2:Issuer>https://testi.apro.tunnistus.fi/idp1</saml2:Issuer>
+    <saml2:Subject>
+      <saml2:NameID
+        Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+        NameQualifier="https://testi.apro.tunnistus.fi/idp1"
+        SPNameQualifier="https://www.service.fi/auth/suomifi/metadata">AAdzZWNyZXQxfxVUqsT8k/OSMQF/s80N/8TyMb5MERaTUMrYtjpqQV/yStP+CEUegeoHqAVnB9LLOEz2XkE5ZS09VT/4FoAVyonc1z8p5TYIAQI1Hi4wAzINh7OTA6szITMUwP5GfFkW7lGQ0avmRSsr3LODiNGC1zDguiSTX0DtQ9Uq5kQ5nYLz+rJO</saml2:NameID>
+      <saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+        <saml2:SubjectConfirmationData
+          Address="172.17.0.1"
+          InResponseTo="_ddbbb11f-6c0f-4c9b-8e82-1c7ae7902d64"
+          NotOnOrAfter="2019-08-10T13:08:46.703Z"
+          Recipient="https://www.service.fi/auth/suomifi/callback"/>
+      </saml2:SubjectConfirmation>
+    </saml2:Subject>
+    <saml2:Conditions NotBefore="2019-08-10T13:03:46.695Z" NotOnOrAfter="2019-08-10T13:08:46.695Z">
+      <saml2:AudienceRestriction>
+        <saml2:Audience>https://www.service.fi/auth/suomifi/metadata</saml2:Audience>
+      </saml2:AudienceRestriction>
+    </saml2:Conditions>
+    <saml2:AuthnStatement AuthnInstant="2019-08-10T13:03:43.874Z" SessionIndex="_c5e2441217fe54f0054d932b89aa23d2">
+      <saml2:SubjectLocality Address="172.17.0.1"/>
+      <saml2:AuthnContext>
+        <saml2:AuthnContextClassRef>http://ftn.ficora.fi/2017/loa2</saml2:AuthnContextClassRef>
+      </saml2:AuthnContext>
+    </saml2:AuthnStatement>
+    <saml2:AttributeStatement>
+      <saml2:Attribute FriendlyName="firstName" Name="http://eidas.europa.eu/attributes/naturalperson/CurrentGivenName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>Nordea</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute FriendlyName="VakinainenKotimainenLahiosoitePostitoimipaikkaS" Name="urn:oid:1.2.246.517.2002.2.7" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>TURKU</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute FriendlyName="displayName" Name="urn:oid:2.16.840.1.113730.3.1.241" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>Nordea Demo</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="urn:oid:1.2.246.517.3002.111.2" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>true</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute FriendlyName="VakinainenKotimainenLahiosoitePostinumero" Name="urn:oid:1.2.246.517.2002.2.6" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>20006</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute FriendlyName="givenName" Name="urn:oid:2.5.4.42" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>Nordea</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute FriendlyName="KotikuntaKuntaS" Name="urn:oid:1.2.246.517.2002.2.19" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>Turku</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute FriendlyName="cn" Name="urn:oid:2.5.4.3" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>Demo Nordea</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute FriendlyName="sn" Name="urn:oid:2.5.4.4" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>Demo</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute FriendlyName="KotikuntaKuntanumero" Name="urn:oid:1.2.246.517.2002.2.18" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>853</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute FriendlyName="nationalIdentificationNumber" Name="urn:oid:1.2.246.21" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue>210281-9988</saml2:AttributeValue>
+      </saml2:Attribute>
+    </saml2:AttributeStatement>
+  </saml2:Assertion>
+</saml2p:Response>
