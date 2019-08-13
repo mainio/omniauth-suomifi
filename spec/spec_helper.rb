@@ -13,7 +13,6 @@ require 'rack/test'
 require 'rexml/document'
 require 'rexml/xpath'
 require 'base64'
-require 'xmlenc'
 
 TEST_LOGGER = Logger.new(StringIO.new)
 OneLogin::RubySaml::Logging.logger = TEST_LOGGER

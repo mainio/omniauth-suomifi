@@ -10,8 +10,22 @@ module OmniAuth
         end
 
         def self.encrypted_signed_xml(raw_xml_file, opts)
-          xml_source = OmniAuth::Suomifi::Test::XmlEncryptor.encrypted_xml(
+          xml_source = XmlEncryptor.encrypted_xml(
             raw_xml_file,
+            opts[:certificate],
+            opts[:sign_certificate],
+            opts[:sign_private_key]
+          )
+          sign_xml_element(
+            xml_source,
+            opts[:sign_certificate],
+            opts[:sign_private_key]
+          )
+        end
+
+        def self.encrypted_signed_xml_from_string(raw_xml, opts)
+          xml_source = XmlEncryptor.encrypted_xml_from_string(
+            raw_xml,
             opts[:certificate],
             opts[:sign_certificate],
             opts[:sign_private_key]

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'xmlenc'
+
 module OmniAuth
   module Suomifi
     module Test
@@ -33,13 +35,17 @@ module OmniAuth
         end
 
         def self.encrypted_xml(raw_xml_file, cert, sign_cert, sign_key)
+          raw_xml = IO.read(raw_xml_file)
+          encrypted_xml_from_string(raw_xml, cert, sign_cert, sign_key)
+        end
+
+        def self.encrypted_xml_from_string(raw_xml, cert, sign_cert, sign_key)
           enc = new(
             encryption_certificate: cert,
             sign_certificate: sign_cert,
             sign_key: sign_key
           )
 
-          raw_xml = IO.read(raw_xml_file)
           enc.encrypt(raw_xml)
         end
 
