@@ -413,6 +413,21 @@ module OmniAuth
         )
       end
 
+      # This method can be used externally to fetch information about the
+      # response, e.g. in case of failures.
+      def response_object
+        return nil unless request.params['SAMLResponse']
+
+        with_settings do |settings|
+          response = OneLogin::RubySaml::Response.new(
+            request.params['SAMLResponse'],
+            options_for_response_object.merge(settings: settings)
+          )
+          response.attributes['fingerprint'] = settings.idp_cert_fingerprint
+          response
+        end
+      end
+
     private
 
       def scoped_request_attributes

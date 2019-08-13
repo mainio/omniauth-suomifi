@@ -330,6 +330,17 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       it 'should set the response_object to the response object from ruby_saml response' do
         expect(auth_hash['extra']['response_object']).to be_kind_of(OneLogin::RubySaml::Response)
       end
+
+      describe '#response_object' do
+        subject { instance.response_object }
+
+        let(:instance) { last_request.env['omniauth.strategy'] }
+
+        it 'should return the response object' do
+          is_expected.to be_a(OneLogin::RubySaml::Response)
+          is_expected.to be_is_valid
+        end
+      end
     end
 
     context 'when response is a logout response' do
