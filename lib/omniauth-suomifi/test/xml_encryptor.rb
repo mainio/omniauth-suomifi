@@ -17,11 +17,9 @@ module OmniAuth
         def encrypt(raw_xml)
           doc = XMLSecurity::Document.new(raw_xml)
           assertion = doc.delete_element('//saml2:Assertion')
-          assertion_signed = Utility.sign_xml_element(
-            assertion.to_s,
-            sign_certificate,
-            sign_key
-          )
+          return doc.to_s unless assertion
+
+          assertion_signed = Utility.sign_xml_element(assertion.to_s, sign_certificate, sign_key)
 
           encrypted = doc.root.add_element(
             'saml2:EncryptedAssertion',
