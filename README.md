@@ -189,7 +189,15 @@ Devise.setup do |config|
     # The certificate and its corresponding private key. The certificate (public
     # part) needs to be provided to Suomi.fi as part of the metadata.
     certificate_file: "#{cert_path}/certificate.crt",
-    private_key_file: "#{cert_path}/private.key"
+    private_key_file: "#{cert_path}/private.key",
+    # Define a salt for hashing the OmniAuth `uid` value from the personal
+    # identifiers. The OmniAuth `uid` should always be unique per person, which
+    # is why it is generated from the personal identity codes. That code may,
+    # however, contain personal data such as date of birth or gender, which is
+    # why it is hashed using this salt. For Rails, this defaults to
+    # `Rails.application.secrets.secret_key_base` and does not need to be
+    # specifically configured.
+    uid_salt: 'abcdef123'
 end
 ```
 
