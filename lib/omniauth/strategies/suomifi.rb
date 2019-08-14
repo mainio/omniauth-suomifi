@@ -460,6 +460,9 @@ module OmniAuth
       def initialize(app, *args, &block)
         super
 
+        # Add the request attributes to the options.
+        options[:request_attributes] = scoped_request_attributes
+
         # Add the Suomi.fi options to the local options, most of which are
         # fetched from the metadata. The options array is the one that gets
         # priority in case it overrides some of the metadata or locally defined
@@ -532,9 +535,6 @@ module OmniAuth
           sso_binding: ['urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'],
           slo_binding: ['urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
         )
-
-        # Add the request attributes to the options.
-        options[:request_attributes] = scoped_request_attributes
 
         # Local certificate and private key to decrypt the responses
         settings[:certificate] = certificate
