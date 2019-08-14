@@ -13,8 +13,5 @@
 # rbenv environment variables
 .rbenv-vars
 
-# default test application
-spec/decidim_dummy_app
-
 # default development application
 development_app
