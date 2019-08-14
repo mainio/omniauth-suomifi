@@ -3,7 +3,7 @@
 SimpleCov.start do
   root ENV["ENGINE_ROOT"]
 
-  add_filter "lib/decidim/antivirus/version.rb"
+  add_filter "lib/omniauth-suomifi/version.rb"
   add_filter "/spec"
 end
 
