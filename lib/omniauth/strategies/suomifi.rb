@@ -392,6 +392,62 @@ module OmniAuth
         extensive: %w[urn:oid:1.2.246.517.2002.2.26]
       )
 
+      # Salt that is used for the UID hashing. If not set, will use Rails
+      # secret_key_base when under Rails. If not set and not using Rails, the
+      # salt will be an empty string (not suggested).
+      option :uid_salt, nil
+
+      # Customize the UID fetching as this has few conditions.
+      #
+      # The electronic identification number (sähköinen asiointitunnus, SATU) is
+      # a unique electronic ID bound to the person. The ID itself does not
+      # reveal any personal information of the person holding it unlike the
+      # national identifiers can do.
+      #
+      # The SATU ID is only assigned to real people and cannot be therefore
+      # determined e.g. in the Suomi.fi testing environment which is why we
+      # provide a fallback using the national identifier which is always set for
+      # Suomi.fi authentication requests
+      #
+      # For eIDAS authentications, both SATU ID and the national identifier are
+      # NOT set, so in those cases we need to use the eIDAS personal identifier.
+      #
+      # The national identifier and eIDAS personal identifier are  hashed in
+      # order to hide any personal details they are carrying (such as date of
+      # birth, gender, etc.). Please provide a salt with the `uid_salt`
+      # configuration option for proper hashing of the strings. For Rails, it
+      # will be automatically set by
+      # `Rails.application.secrets.secret_key_base`.
+      #
+      # Finally, fallback to the SAML NameID which is only unique per session.
+      # This should not happen with any valid authentication requests.
+      uid do
+        electronic_id = find_attribute_by(['urn:oid:1.2.246.22'])
+        national_id = find_attribute_by(['urn:oid:1.2.246.21'])
+        eidas_id = find_attribute_by(
+          ['http://eidas.europa.eu/attributes/naturalperson/PersonIdentifier']
+        )
+        hash_salt = begin
+          if options.uid_salt
+            options.uid_salt
+          elsif defined?(::Rails) && ::Rails.application
+            ::Rails.application.secrets.secret_key_base
+          else
+            ''
+          end
+        end
+
+        if !electronic_id.nil?
+          'FINUID:' + electronic_id
+        elsif !national_id.nil?
+          'FIHETU:' + Digest::MD5.hexdigest("FI:#{national_id}:#{hash_salt}")
+        elsif !eidas_id.nil?
+          'EIDASPID:' + Digest::MD5.hexdigest("EIDAS:#{eidas_id}:#{hash_salt}")
+        else
+          @name_id
+        end
+      end
+
       # Add the SAML attributes and the VTJ search success state to the extra
       # hash for easier access.
       extra do

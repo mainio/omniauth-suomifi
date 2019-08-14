@@ -221,9 +221,12 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
     let(:xml) { :authn_response_decrypted_unsigned }
 
     context 'when the response is valid' do
+      let(:uid_salt) { 'uidsalt' }
+      let(:rails_salt) { nil } # Set this for testing with Rails secret
       let(:saml_options) do
         {
           mode: :test,
+          uid_salt: uid_salt,
           scope_of_data: scope_of_data,
           sp_entity_id: sp_entity_id,
           certificate: certificate.to_pem,
@@ -233,6 +236,8 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
           }
         }
       end
+
+      let(:custom_saml_attributes) { [] }
 
       # Use local certificate and private key for signing because otherwise the
       # locally signed SAMLResponse's signature cannot be properly validated as
@@ -247,13 +252,70 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
           Time.utc(2019, 8, 10, 13, 5, 0)
         )
 
+        if rails_salt
+          rails = double
+          application = double
+          secrets = double
+          allow(rails).to receive(:application).and_return(application)
+          allow(application).to receive(:secrets).and_return(secrets)
+          allow(secrets).to receive(:secret_key_base).and_return(rails_salt)
+          Object.const_set(:Rails, rails)
+        end
+
         raw_xml_file = support_filepath("#{xml}.xml")
-        xml_signed = OmniAuth::Suomifi::Test::Utility.encrypted_signed_xml(
-          raw_xml_file,
-          certificate: certificate,
-          sign_certificate: sign_certificate,
-          sign_private_key: sign_private_key
-        )
+        xml_signed = begin
+          if !custom_saml_attributes.empty?
+            xml_io = IO.read(raw_xml_file)
+            doc = Nokogiri::XML::Document.parse(xml_io)
+            statements_node = doc.root.at_xpath(
+              '//saml2:Assertion//saml2:AttributeStatement',
+              saml2: 'urn:oasis:names:tc:SAML:2.0:assertion'
+            )
+            custom_saml_attributes.each do |attr|
+              attr_def = described_class.default_options[:possible_request_attributes].find do |ra|
+                ra[:friendly_name] == attr[:friendly_name]
+              end
+              next unless attr_def
+
+              attr_node = statements_node.at_xpath(
+                "saml2:Attribute[@Name='#{attr_def[:name]}']",
+                saml2: 'urn:oasis:names:tc:SAML:2.0:assertion'
+              )
+              if attr_node.nil?
+                attr_node = Nokogiri::XML::Node.new('saml2:Attribute', doc)
+                attr_node['FriendlyName'] = attr_def[:friendly_name]
+                attr_node['Name'] = attr_def[:name]
+                attr_node['NameFormat'] = attr_def[:name_format]
+
+                statements_node.add_child(attr_node)
+              else
+                attr_node.children.remove
+              end
+
+              if attr[:value].nil?
+                attr_node.remove
+              else
+                attr_node.add_child(
+                  "<saml2:AttributeValue>#{attr[:value]}</saml2:AttributeValue>"
+                )
+              end
+            end
+
+            OmniAuth::Suomifi::Test::Utility.encrypted_signed_xml_from_string(
+              doc.to_s,
+              certificate: certificate,
+              sign_certificate: sign_certificate,
+              sign_private_key: sign_private_key
+            )
+          else
+            OmniAuth::Suomifi::Test::Utility.encrypted_signed_xml(
+              raw_xml_file,
+              certificate: certificate,
+              sign_certificate: sign_certificate,
+              sign_private_key: sign_private_key
+            )
+          end
+        end
 
         saml_response = Base64.encode64(xml_signed)
 
@@ -263,8 +325,8 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
         )
       end
 
-      it 'should set the uid to the nameID in the SAML response' do
-        expect(auth_hash['uid']).to eq('AAdzZWNyZXQxfxVUqsT8k/OSMQF/s80N/8TyMb5MERaTUMrYtjpqQV/yStP+CEUegeoHqAVnB9LLOEz2XkE5ZS09VT/4FoAVyonc1z8p5TYIAQI1Hi4wAzINh7OTA6szITMUwP5GfFkW7lGQ0avmRSsr3LODiNGC1zDguiSTX0DtQ9Uq5kQ5nYLz+rJO')
+      after :each do
+        Object.send(:remove_const, :Rails) if defined?(::Rails)
       end
 
       it 'should set the raw info to all attributes' do
@@ -339,6 +401,88 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
         it 'should return the response object' do
           is_expected.to be_a(OneLogin::RubySaml::Response)
           is_expected.to be_is_valid
+        end
+      end
+
+      context 'with the SATU ID available in the response' do
+        let(:custom_saml_attributes) do
+          [
+            {
+              friendly_name: 'electronicIdentificationNumber',
+              value: '012345678N'
+            }
+          ]
+        end
+
+        it 'should set the uid to SATU ID' do
+          expect(auth_hash['uid']).to eq('FINUID:012345678N')
+        end
+      end
+
+      context 'with the HETU ID available in the response' do
+        # The HETU is already set in the sample XML
+        it 'should set the uid to hashed HETU ID' do
+          expect(auth_hash['uid']).to eq(
+            'FIHETU:' + Digest::MD5.hexdigest("FI:210281-9988:#{uid_salt}")
+          )
+        end
+
+        context 'when using Rails salt' do
+          let(:uid_salt) { nil }
+          let(:rails_salt) { 'railssalt' }
+
+          it 'should set the uid to hashed eIDAS PID' do
+            expect(auth_hash['uid']).to eq(
+              'FIHETU:' + Digest::MD5.hexdigest("FI:210281-9988:#{rails_salt}")
+            )
+          end
+        end
+      end
+
+      context 'with the eIDAS PID available in the response' do
+        let(:custom_saml_attributes) do
+          [
+            {
+              friendly_name: 'nationalIdentificationNumber',
+              value: nil
+            },
+            {
+              friendly_name: 'PersonIdentifier',
+              value: '28493196Z' # Spanish DNI
+            }
+          ]
+        end
+
+        it 'should set the uid to hashed eIDAS PID' do
+          expect(auth_hash['uid']).to eq(
+            'EIDASPID:' + Digest::MD5.hexdigest("EIDAS:28493196Z:#{uid_salt}")
+          )
+        end
+
+        context 'when using Rails salt' do
+          let(:uid_salt) { nil }
+          let(:rails_salt) { 'railssalt' }
+
+          it 'should set the uid to hashed eIDAS PID' do
+            expect(auth_hash['uid']).to eq(
+              'EIDASPID:' + Digest::MD5.hexdigest("EIDAS:28493196Z:#{rails_salt}")
+            )
+          end
+        end
+      end
+
+      context 'with no personal identifier available in the response' do
+        let(:custom_saml_attributes) do
+          [
+            {
+              friendly_name: 'nationalIdentificationNumber',
+              value: nil
+            }
+          ]
+        end
+
+        it 'should set the uid to the SAML name ID' do
+          expect(auth_hash['uid']).to eq('AAdzZWNyZXQxfxVUqsT8k/OSMQF/s80N/8TyMb5MERaTUMrYtjpqQV/yStP+CEUegeoHqAVnB9LLOEz2XkE5ZS09VT/4FoAVyonc1z8p5TYIAQI1Hi4wAzINh7OTA6szITMUwP5GfFkW7lGQ0avmRSsr3LODiNGC1zDguiSTX0DtQ9Uq5kQ5nYLz+rJO')
         end
       end
     end
