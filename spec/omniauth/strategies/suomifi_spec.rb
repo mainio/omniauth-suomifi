@@ -329,6 +329,16 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
         Object.send(:remove_const, :Rails) if defined?(::Rails)
       end
 
+      it 'should set the info hash correctly' do
+        expect(auth_hash['info'].to_hash).to eq(
+          'email' => nil,
+          'first_name' => 'Nordea',
+          'last_name' => 'Demo',
+          'location' => 'TURKU',
+          'name' => 'Nordea Demo'
+        )
+      end
+
       it 'should set the raw info to all attributes' do
         expect(auth_hash['extra']['raw_info'].all.to_hash).to eq(
           'http://eidas.europa.eu/attributes/naturalperson/CurrentGivenName' => ['Nordea'],
