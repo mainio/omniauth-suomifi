@@ -1,5 +1,8 @@
 # OmniAuth Suomi.fi
 
+[![Build Status](https://travis-ci.com/mainio/omniauth-suomifi.svg?branch=master)](https://travis-ci.com/mainio/omniauth-suomifi)
+[![codecov](https://codecov.io/gh/mainio/omniauth-suomifi/branch/master/graph/badge.svg)](https://codecov.io/gh/mainio/omniauth-suomifi)
+
 This is an unofficial OmniAuth strategy for authenticating with the Suomi.fi
 e-Identification service. This is mostly a configuration wrapper around
 [`omniauth-saml`](https://github.com/omniauth/omniauth-saml) which uses
