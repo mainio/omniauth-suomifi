@@ -1,12 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <saml2p:LogoutRequest
-  xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
-  ID="_b6a69da0-04a2-0134-ea8a-0a2068490f7d"
-  IssueInstant="2016-05-25T12:32:48"
-  Version="2.0">
-  <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://www.service.fi/auth/suomifi/metadata</saml2:Issuer>
+  Destination='https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SLO'
+  ID='_274a0148-44ad-4238-bdb0-e56c971ae3bc'
+  IssueInstant='2019-08-15T09:06:57Z'
+  Version='2.0'
+  xmlns:saml2='urn:oasis:names:tc:SAML:2.0:assertion'
+  xmlns:saml2p='urn:oasis:names:tc:SAML:2.0:protocol'>
+  <saml2:Issuer xmlns:saml2='urn:oasis:names:tc:SAML:2.0:assertion'>https://www.service.fi/auth/suomifi/metadata</saml2:Issuer>
   <saml2:NameID
     xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
     Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
     NameQualifier="https://testi.apro.tunnistus.fi/idp1"
     SPNameQualifier="https://www.service.fi/auth/suomifi/metadata">AAdzZWNyZXQxfxVUqsT8k/OSMQF/s80N/8TyMb5MERaTUMrYtjpqQV/yStP+CEUegeoHqAVnB9LLOEz2XkE5ZS09VT/4FoAVyonc1z8p5TYIAQI1Hi4wAzINh7OTA6szITMUwP5GfFkW7lGQ0avmRSsr3LODiNGC1zDguiSTX0DtQ9Uq5kQ5nYLz+rJO</saml2:NameID>
+  <saml2p:SessionIndex xmlns:saml2p='urn:oasis:names:tc:SAML:2.0:protocol'>_c5e2441217fe54f0054d932b89aa23d2</saml2p:SessionIndex>
 </saml2p:LogoutRequest>
