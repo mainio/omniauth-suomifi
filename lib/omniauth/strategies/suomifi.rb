@@ -295,6 +295,8 @@ module OmniAuth
       option(
         :security_settings,
         authn_requests_signed: true,
+        logout_requests_signed: true,
+        logout_responses_signed: true,
         want_assertions_signed: true,
         digest_method: XMLSecurity::Document::SHA256,
         signature_method: XMLSecurity::Document::RSA_SHA256
@@ -397,6 +399,12 @@ module OmniAuth
       # salt will be an empty string (not suggested).
       option :uid_salt, nil
 
+      # Default relay state to the root path. This will redirect the logout
+      # requests to the root of the application in case this configuration is
+      # not overridden. Please refer to the omniauth-saml gem's documentation in
+      # order to define this option.
+      option :slo_default_relay_state, '/'
+
       # Customize the UID fetching as this has few conditions.
       #
       # The electronic identification number (sähköinen asiointitunnus, SATU) is
@@ -462,6 +470,19 @@ module OmniAuth
 
         # Add the request attributes to the options.
         options[:request_attributes] = scoped_request_attributes
+        options[:sp_name_qualifier] = options[:sp_entity_id] if options[:sp_name_qualifier].nil?
+
+        # Remove the nil options from the origianl options array that will be
+        # defined by the Suomi.fi options
+        %i[
+          certificate
+          private_key
+          idp_name_qualifier
+          name_identifier_format
+          security
+        ].each do |key|
+          options.delete(key) if options[key].nil?
+        end
 
         # Add the Suomi.fi options to the local options, most of which are
         # fetched from the metadata. The options array is the one that gets
@@ -488,6 +509,21 @@ module OmniAuth
       end
 
     private
+
+      # Suomi.fi requires that the service provider needs to end the local user
+      # session BEFORE sending the logout request to the identity provider.
+      def other_phase_for_spslo
+        return super unless options.idp_slo_target_url
+
+        with_settings do |settings|
+          # Some session variables are needed when generating the logout request
+          request = generate_logout_request(settings)
+          # Destroy the local user session
+          options[:idp_slo_session_destroy].call @env, session
+          # Send the logout request to the identity provider
+          redirect(request)
+        end
+      end
 
       def scoped_request_attributes
         scopes = [:limited]
@@ -544,6 +580,10 @@ module OmniAuth
         # modified
         security_defaults = OneLogin::RubySaml::Settings::DEFAULTS[:security]
         settings[:security] = security_defaults.merge(options.security_settings)
+
+        # Add some extra information that is necessary for correctly formatted
+        # logout requests.
+        settings[:idp_name_qualifier] = settings[:idp_entity_id]
 
         settings
       end
