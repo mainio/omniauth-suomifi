@@ -12,6 +12,3 @@
 
 # rbenv environment variables
 .rbenv-vars
-
-# default development application
-development_app
