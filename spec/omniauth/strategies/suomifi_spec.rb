@@ -60,8 +60,8 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       expect(instance.options[:private_key]).to eq(private_key.to_pem)
       expect(instance.options[:security]).to include(
         'authn_requests_signed' => true,
-        'logout_requests_signed' => false,
-        'logout_responses_signed' => false,
+        'logout_requests_signed' => true,
+        'logout_responses_signed' => true,
         'want_assertions_signed' => true,
         'want_assertions_encrypted' => false,
         'want_name_id' => false,
@@ -77,10 +77,19 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       expect(instance.options[:assertion_consumer_service_url]).to eq(
         'https://www.service.fi/auth/suomifi/callback'
       )
+      expect(instance.options[:sp_name_qualifier]).to eq(
+        'https://www.service.fi/auth/suomifi/metadata'
+      )
+      expect(instance.options[:idp_name_qualifier]).to eq(
+        'https://testi.apro.tunnistus.fi/idp1'
+      )
 
       # Check the most important metadata options
       expect(instance.options[:idp_entity_id]).to eq(
         'https://testi.apro.tunnistus.fi/idp1'
+      )
+      expect(instance.options[:name_identifier_format]).to eq(
+        'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
       )
       expect(instance.options[:idp_slo_target_url]).to eq(
         'https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SLO'
@@ -503,7 +512,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
           SAMLResponse: base64_file('logout_response.xml'),
           RelayState: 'https://www.service.fi/'
         }, 'rack.session' => {
-          'saml_transaction_id' => '_3fef1069-d0c6-418a-b68d-6f008a4787e9'
+          'saml_transaction_id' => '_b6a69da0-04a2-0134-ea8a-0a2068490f7d'
         }
       end
 
