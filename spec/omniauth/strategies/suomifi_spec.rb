@@ -456,6 +456,16 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
             )
           end
         end
+
+        context 'when using no salt' do
+          let(:uid_salt) { nil }
+
+          it 'should set the uid to hashed eIDAS PID' do
+            expect(auth_hash['uid']).to eq(
+              'FIHETU:' + Digest::MD5.hexdigest('FI:210281-9988:')
+            )
+          end
+        end
       end
 
       context 'with the eIDAS PID available in the response' do
@@ -485,6 +495,16 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
           it 'should set the uid to hashed eIDAS PID' do
             expect(auth_hash['uid']).to eq(
               'EIDASPID:' + Digest::MD5.hexdigest("EIDAS:28493196Z:#{rails_salt}")
+            )
+          end
+        end
+
+        context 'when using no salt' do
+          let(:uid_salt) { nil }
+
+          it 'should set the uid to hashed eIDAS PID' do
+            expect(auth_hash['uid']).to eq(
+              'EIDASPID:' + Digest::MD5.hexdigest('EIDAS:28493196Z:')
             )
           end
         end
