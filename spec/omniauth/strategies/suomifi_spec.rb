@@ -256,17 +256,6 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
         end
       end
 
-      shared_examples 'locale not added' do |request_locale,|
-        subject { get "/auth/suomifi?locale=#{request_locale}" }
-
-        it do
-          is_expected.to be_redirect
-
-          location = URI.parse(last_response.location)
-          expect(location.query).not_to match(/&locale=[a-z]+$/)
-        end
-      end
-
       context 'when set to fi' do
         it_behaves_like 'locale added', 'fi', 'fi'
       end
@@ -288,15 +277,15 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       end
 
       context 'when set to et' do
-        it_behaves_like 'locale not added', 'et'
+        it_behaves_like 'locale added', 'et', 'fi'
       end
 
       context 'when set to de-DE' do
-        it_behaves_like 'locale not added', 'de-DE'
+        it_behaves_like 'locale added', 'de-DE', 'fi'
       end
 
       context 'when set to nb_NO' do
-        it_behaves_like 'locale not added', 'nb_NO'
+        it_behaves_like 'locale added', 'nb_NO', 'fi'
       end
     end
   end

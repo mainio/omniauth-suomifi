@@ -28,11 +28,16 @@ module OmniAuth
       # - en_US
       #
       # In case a valid language cannot be parsed from the parameter, the locale
-      # parameter will not be added to the redirect URL.
+      # parameter will default to `:idp_sso_target_url_default_locale`.
       #
       # Note that the locale parameter is always added as the last parameter in
       # in the redirect URL as expected by Suomi.fi.
       option :idp_sso_target_url_locale_params, %w[locale language lang]
+
+      # This is the default locale to be passed to IdP sign in redirect URL as
+      # defined above. In case a valid locale is not found from the request
+      # parameters, this will be used instead.
+      option :idp_sso_target_url_default_locale, 'fi'
 
       # The request attributes for Suomi.fi
       option :possible_request_attributes, [
@@ -653,7 +658,7 @@ module OmniAuth
           end
         end
 
-        nil
+        options.idp_sso_target_url_default_locale
       end
 
       def parse_language_value(string)
