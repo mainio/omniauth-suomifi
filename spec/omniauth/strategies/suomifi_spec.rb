@@ -223,6 +223,23 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       expect(issuer.text).to eq('https://www.service.fi/auth/suomifi/metadata')
     end
 
+    context 'with extra parameters' do
+      subject { get '/auth/suomifi?extra=param' }
+
+      it 'should not add any extra parameters to the redirect assertion consumer service URL' do
+        is_expected.to be_redirect
+
+        location = URI.parse(last_response.location)
+        query = Rack::Utils.parse_query location.query
+
+        xml = OmniAuth::Suomifi::Test::Utility.inflate_xml(query['SAMLRequest'])
+        request = REXML::Document.new(xml)
+        acs = request.root.attributes['AssertionConsumerServiceURL']
+
+        expect(acs).to eq('https://www.service.fi/auth/suomifi/callback')
+      end
+    end
+
     context 'with locale parameter' do
       shared_examples '' do
         specify { expect(true).to eq true }

@@ -540,6 +540,13 @@ module OmniAuth
         end
       end
 
+      # Override the callback URL so that it always matches the one expected by
+      # Suomi.fi. No additional query string parameters can be included in the
+      # string.
+      def callback_url
+        full_host + script_name + callback_path
+      end
+
     private
 
       # Suomi.fi requires that the service provider needs to end the local user
