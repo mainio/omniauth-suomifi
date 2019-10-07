@@ -222,6 +222,66 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       issuer = request.root.elements['saml:Issuer']
       expect(issuer.text).to eq('https://www.service.fi/auth/suomifi/metadata')
     end
+
+    context 'with locale parameter' do
+      shared_examples '' do
+        specify { expect(true).to eq true }
+      end
+
+      shared_examples 'locale added' do |request_locale, expected_locale|
+        subject { get "/auth/suomifi?locale=#{request_locale}" }
+
+        it do
+          is_expected.to be_redirect
+
+          location = URI.parse(last_response.location)
+          expect(location.query).to match(/&locale=#{expected_locale}$/)
+        end
+      end
+
+      shared_examples 'locale not added' do |request_locale,|
+        subject { get "/auth/suomifi?locale=#{request_locale}" }
+
+        it do
+          is_expected.to be_redirect
+
+          location = URI.parse(last_response.location)
+          expect(location.query).not_to match(/&locale=[a-z]+$/)
+        end
+      end
+
+      context 'when set to fi' do
+        it_behaves_like 'locale added', 'fi', 'fi'
+      end
+
+      context 'when set to fi-FI' do
+        it_behaves_like 'locale added', 'fi-FI', 'fi'
+      end
+
+      context 'when set to sv' do
+        it_behaves_like 'locale added', 'sv', 'sv'
+      end
+
+      context 'when set to sv_SE' do
+        it_behaves_like 'locale added', 'sv_SE', 'sv'
+      end
+
+      context 'when set to en_GB' do
+        it_behaves_like 'locale added', 'en_GB', 'en'
+      end
+
+      context 'when set to et' do
+        it_behaves_like 'locale not added', 'et'
+      end
+
+      context 'when set to de-DE' do
+        it_behaves_like 'locale not added', 'de-DE'
+      end
+
+      context 'when set to nb_NO' do
+        it_behaves_like 'locale not added', 'nb_NO'
+      end
+    end
   end
 
   describe 'POST /auth/suomifi/callback' do

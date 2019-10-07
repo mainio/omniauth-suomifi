@@ -16,6 +16,24 @@ module OmniAuth
       # The private key file to define the private key.
       option :private_key_file, nil
 
+      # Defines the locale parameters to check from the request phase request
+      # parameters. A valid language will be added to the IdP sign in redirect
+      # URL as the last parameter (with the name `locale` as expected by
+      # Suomi.fi).
+      #
+      # Suomi.fi accepts `fi`, `sv` or `en` in this parameter. The language can
+      # be parsed from the following kind of strings:
+      # - fi
+      # - sv-SE
+      # - en_US
+      #
+      # In case a valid language cannot be parsed from the parameter, the locale
+      # parameter will not be added to the redirect URL.
+      #
+      # Note that the locale parameter is always added as the last parameter in
+      # in the redirect URL as expected by Suomi.fi.
+      option :idp_sso_target_url_locale_params, %w[locale language lang]
+
       # The request attributes for Suomi.fi
       option :possible_request_attributes, [
         ##############################
@@ -493,6 +511,20 @@ module OmniAuth
         )
       end
 
+      # Override the request phase to be able to pass the locale parameter to
+      # the redirect URL. Note that this needs to be the last parameter to
+      # be passed to the redirect URL.
+      def request_phase
+        authn_request = OneLogin::RubySaml::Authrequest.new
+        locale = locale_for_authn_request
+
+        with_settings do |settings|
+          url = authn_request.create(settings, additional_params_for_authn_request)
+          url += "&locale=#{CGI.escape(locale)}" unless locale.nil?
+          redirect(url)
+        end
+      end
+
       # This method can be used externally to fetch information about the
       # response, e.g. in case of failures.
       def response_object
@@ -602,6 +634,25 @@ module OmniAuth
             attrs[target] = find_attribute_by(source)
           end
         end
+      end
+
+      def locale_for_authn_request
+        if options.idp_sso_target_url_locale_params.is_a?(Array)
+          options.idp_sso_target_url_locale_params.each do |param|
+            next unless request.params.key?(param.to_s)
+
+            locale = parse_language_value(request.params[param.to_s])
+            return locale unless locale.nil?
+          end
+        end
+
+        nil
+      end
+
+      def parse_language_value(string)
+        language = string.sub('_', '-').split('-').first
+
+        language if language =~ /^(fi|sv|en)$/
       end
     end
   end
