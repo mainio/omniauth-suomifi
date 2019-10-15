@@ -593,10 +593,12 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
     end
 
     context 'when response is a logout response' do
+      let(:relay_state) { '/relay/uri' }
+
       before :each do
         post '/auth/suomifi/slo', {
           SAMLResponse: base64_file('logout_response.xml'),
-          RelayState: 'https://www.service.fi/'
+          RelayState: relay_state
         }, 'rack.session' => {
           'saml_transaction_id' => '_b6a69da0-04a2-0134-ea8a-0a2068490f7d'
         }
@@ -604,7 +606,31 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
 
       it 'should redirect to relaystate' do
         expect(last_response).to be_redirect
-        expect(last_response.location).to eq('https://www.service.fi/')
+        expect(last_response.location).to eq('/relay/uri')
+      end
+
+      context 'with a full HTTP URI as relaystate' do
+        let(:relay_state) { 'http://www.mainiotech.fi/vuln' }
+
+        it 'should redirect to the root path' do
+          expect(last_response.location).to eq('/')
+        end
+      end
+
+      context 'with a full HTTPS URI as relaystate' do
+        let(:relay_state) { 'https://www.mainiotech.fi/vuln' }
+
+        it 'should redirect to the root path' do
+          expect(last_response.location).to eq('/')
+        end
+      end
+
+      context 'with a non-protocol URI as relaystate' do
+        let(:relay_state) { '//www.mainiotech.fi/vuln' }
+
+        it 'should redirect to the root path' do
+          expect(last_response.location).to eq('/')
+        end
       end
     end
 
@@ -627,14 +653,124 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
           expect(last_response.location).to match %r{https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SLO}
         end
       end
+
+      context 'when RelayState is provided' do
+        let(:params) { {'SAMLRequest' => base64_file('logout_request.xml'), 'RelayState' => relay_state} }
+        let(:relay_state) { nil }
+
+        before { subject }
+
+        context 'with a valid value' do
+          let(:relay_state) { '/local/path/to/app' }
+
+          it 'should add the RelayState parameter to the response' do
+            expect(last_response).to be_redirect
+
+            location = URI.parse(last_response.location)
+            query = Rack::Utils.parse_query location.query
+            expect(query['RelayState']).to eq(relay_state)
+          end
+        end
+
+        context 'with a full HTTP URI' do
+          let(:relay_state) { 'http://www.mainiotech.fi/vuln' }
+
+          it 'should add root URI as the RelayState parameter to the response' do
+            expect(last_response).to be_redirect
+
+            location = URI.parse(last_response.location)
+            query = Rack::Utils.parse_query location.query
+            expect(query['RelayState']).to eq('/')
+          end
+        end
+
+        context 'with a full HTTPS URI' do
+          let(:relay_state) { 'https://www.mainiotech.fi/vuln' }
+
+          it 'should add root URI as the RelayState parameter to the response' do
+            expect(last_response).to be_redirect
+
+            location = URI.parse(last_response.location)
+            query = Rack::Utils.parse_query location.query
+            expect(query['RelayState']).to eq('/')
+          end
+        end
+
+        context 'with a non-protocol URI' do
+          let(:relay_state) { '//www.mainiotech.fi/vuln' }
+
+          it 'should add root URI as the RelayState parameter to the response' do
+            expect(last_response).to be_redirect
+
+            location = URI.parse(last_response.location)
+            query = Rack::Utils.parse_query location.query
+            expect(query['RelayState']).to eq('/')
+          end
+        end
+      end
     end
 
     context 'when sp initiated SLO' do
-      it 'should redirect to logout request' do
-        post '/auth/suomifi/spslo'
+      let(:params) { nil }
 
+      before { post('/auth/suomifi/spslo', params) }
+
+      it 'should redirect to logout request' do
         expect(last_response).to be_redirect
         expect(last_response.location).to match %r{https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SLO}
+      end
+
+      context 'when RelayState is provided' do
+        let(:params) { {'RelayState' => relay_state} }
+        let(:relay_state) { nil }
+
+        context 'with a valid value' do
+          let(:relay_state) { '/local/path/to/app' }
+
+          it 'should add the RelayState parameter to the response' do
+            expect(last_response).to be_redirect
+
+            location = URI.parse(last_response.location)
+            query = Rack::Utils.parse_query location.query
+            expect(query['RelayState']).to eq(relay_state)
+          end
+        end
+
+        context 'with a full HTTP URI' do
+          let(:relay_state) { 'http://www.mainiotech.fi/vuln' }
+
+          it 'should add root URI as the RelayState parameter to the response' do
+            expect(last_response).to be_redirect
+
+            location = URI.parse(last_response.location)
+            query = Rack::Utils.parse_query location.query
+            expect(query['RelayState']).to eq('/')
+          end
+        end
+
+        context 'with a full HTTPS URI' do
+          let(:relay_state) { 'https://www.mainiotech.fi/vuln' }
+
+          it 'should add root URI as the RelayState parameter to the response' do
+            expect(last_response).to be_redirect
+
+            location = URI.parse(last_response.location)
+            query = Rack::Utils.parse_query location.query
+            expect(query['RelayState']).to eq('/')
+          end
+        end
+
+        context 'with a non-protocol URI' do
+          let(:relay_state) { '//www.mainiotech.fi/vuln' }
+
+          it 'should add root URI as the RelayState parameter to the response' do
+            expect(last_response).to be_redirect
+
+            location = URI.parse(last_response.location)
+            query = Rack::Utils.parse_query location.query
+            expect(query['RelayState']).to eq('/')
+          end
+        end
       end
     end
   end

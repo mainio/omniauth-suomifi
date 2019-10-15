@@ -569,6 +569,19 @@ module OmniAuth
         end
       end
 
+      # Overridden to disable passing the relay state with a request parameter
+      # which is possible in the default implementation.
+      def slo_relay_state
+        state = super
+
+        # Ensure that we are only using the relay states to redirect the user
+        # within the current website. This forces the relay state to always
+        # start with a single forward slash character (/).
+        return '/' unless state =~ %r{^/[^/].*}
+
+        state
+      end
+
       def scoped_request_attributes
         scopes = [:limited]
         scopes << :medium_extensive if options.scope_of_data == :medium_extensive
