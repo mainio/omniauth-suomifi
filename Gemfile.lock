@@ -33,7 +33,7 @@ GEM
     json (2.2.0)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
-    nokogiri (1.10.4)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     omniauth (1.9.0)
       hashie (>= 3.4.6, < 3.7.0)
