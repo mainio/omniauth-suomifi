@@ -6,7 +6,7 @@
   Version='2.0'
   xmlns:saml2='urn:oasis:names:tc:SAML:2.0:assertion'
   xmlns:saml2p='urn:oasis:names:tc:SAML:2.0:protocol'>
-  <saml2:Issuer xmlns:saml2='urn:oasis:names:tc:SAML:2.0:assertion'>https://www.service.fi/auth/suomifi/metadata</saml2:Issuer>
+  <saml2:Issuer xmlns:saml2='urn:oasis:names:tc:SAML:2.0:assertion'>https://testi.apro.tunnistus.fi/idp1</saml2:Issuer>
   <saml2:NameID
     xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
     Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
