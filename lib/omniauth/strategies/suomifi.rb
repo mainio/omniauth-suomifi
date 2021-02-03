@@ -609,8 +609,8 @@ module OmniAuth
         case options.mode
         when :test
           'https://testi.apro.tunnistus.fi/static/metadata/idp-metadata.xml'
-        else
-          'https://tunnistus.suomi.fi/static/metadata/idp-metadata-secondary.xml'
+        else # :production
+          'https://tunnistus.suomi.fi/static/metadata/idp-metadata-tunnistautuminen.xml'
         end
       end
 
