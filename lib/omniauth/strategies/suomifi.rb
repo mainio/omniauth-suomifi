@@ -28,16 +28,16 @@ module OmniAuth
       # - en_US
       #
       # In case a valid language cannot be parsed from the parameter, the locale
-      # parameter will default to `:idp_sso_target_url_default_locale`.
+      # parameter will default to `:idp_sso_service_url_default_locale`.
       #
       # Note that the locale parameter is always added as the last parameter in
       # in the redirect URL as expected by Suomi.fi.
-      option :idp_sso_target_url_locale_params, %w[locale language lang]
+      option :idp_sso_service_url_locale_params, %w[locale language lang]
 
       # This is the default locale to be passed to IdP sign in redirect URL as
       # defined above. In case a valid locale is not found from the request
       # parameters, this will be used instead.
-      option :idp_sso_target_url_default_locale, 'fi'
+      option :idp_sso_service_url_default_locale, 'fi'
 
       # The request attributes for Suomi.fi
       option :possible_request_attributes, [
@@ -557,7 +557,7 @@ module OmniAuth
       # Suomi.fi requires that the service provider needs to end the local user
       # session BEFORE sending the logout request to the identity provider.
       def other_phase_for_spslo
-        return super unless options.idp_slo_target_url
+        return super unless options.idp_slo_service_url
 
         with_settings do |settings|
           # Some session variables are needed when generating the logout request
@@ -629,6 +629,16 @@ module OmniAuth
           slo_binding: ['urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
         )
 
+        if settings[:idp_slo_response_service_url].nil? && settings[:idp_slo_target_url].nil?
+          # Mitigation after ruby-saml update to 1.12.x. This gem has been
+          # originally developed relying on the `:idp_slo_target_url` settings
+          # which was removed from the newer versions. The SLO requests won't
+          # work unless `:idp_slo_response_service_url` is defined in the
+          # metadata through the `ResponseLocation` attribute in the
+          # `<SingleLogoutService />` node.
+          settings[:idp_slo_target_url] ||= settings[:idp_slo_service_url]
+        end
+
         # Local certificate and private key to decrypt the responses
         settings[:certificate] = certificate
         settings[:private_key] = private_key
@@ -662,8 +672,8 @@ module OmniAuth
       end
 
       def locale_for_authn_request
-        if options.idp_sso_target_url_locale_params.is_a?(Array)
-          options.idp_sso_target_url_locale_params.each do |param|
+        if options.idp_sso_service_url_locale_params.is_a?(Array)
+          options.idp_sso_service_url_locale_params.each do |param|
             next unless request.params.key?(param.to_s)
 
             locale = parse_language_value(request.params[param.to_s])
@@ -671,7 +681,7 @@ module OmniAuth
           end
         end
 
-        options.idp_sso_target_url_default_locale
+        options.idp_sso_service_url_default_locale
       end
 
       def parse_language_value(string)
