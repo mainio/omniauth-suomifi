@@ -91,10 +91,10 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       expect(instance.options[:name_identifier_format]).to eq(
         'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
       )
-      expect(instance.options[:idp_slo_target_url]).to eq(
+      expect(instance.options[:idp_slo_service_url]).to eq(
         'https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SLO'
       )
-      expect(instance.options[:idp_sso_target_url]).to eq(
+      expect(instance.options[:idp_sso_service_url]).to eq(
         'https://testi.apro.tunnistus.fi/idp/profile/SAML2/Redirect/SSO'
       )
 
