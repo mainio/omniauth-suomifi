@@ -1,6 +1,6 @@
 # OmniAuth Suomi.fi
 
-[![Build Status](https://travis-ci.com/mainio/omniauth-suomifi.svg?branch=master)](https://travis-ci.com/mainio/omniauth-suomifi)
+[![Build Status](https://github.com/mainio/omniauth-suomifi/actions/workflows/ci_omniauth-suomifi.yml/badge.svg)](https://github.com/mainio/omniauth-suomifi/actions)
 [![codecov](https://codecov.io/gh/mainio/omniauth-suomifi/branch/master/graph/badge.svg)](https://codecov.io/gh/mainio/omniauth-suomifi)
 
 This is an unofficial OmniAuth strategy for authenticating with the Suomi.fi
