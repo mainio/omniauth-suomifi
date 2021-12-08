@@ -43,7 +43,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
   end
 
   describe '#initialize' do
-    subject { get '/auth/suomifi/metadata' }
+    subject { post '/auth/suomifi/metadata' }
 
     it 'should apply the local options and the IdP metadata options' do
       is_expected.to be_successful
@@ -172,8 +172,8 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
     end
   end
 
-  describe 'GET /auth/suomifi' do
-    subject { get '/auth/suomifi' }
+  describe 'POST /auth/suomifi' do
+    subject { post '/auth/suomifi' }
 
     it 'should sign the request' do
       is_expected.to be_redirect
@@ -224,7 +224,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
     end
 
     context 'with extra parameters' do
-      subject { get '/auth/suomifi?extra=param' }
+      subject { post '/auth/suomifi?extra=param' }
 
       it 'should not add any extra parameters to the redirect assertion consumer service URL' do
         is_expected.to be_redirect
@@ -246,7 +246,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       end
 
       shared_examples 'locale added' do |request_locale, expected_locale|
-        subject { get "/auth/suomifi?locale=#{request_locale}" }
+        subject { post "/auth/suomifi?locale=#{request_locale}" }
 
         it do
           is_expected.to be_redirect
@@ -775,8 +775,8 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
     end
   end
 
-  describe 'GET /auth/suomifi/metadata' do
-    subject { get '/auth/suomifi/metadata' }
+  describe 'POST /auth/suomifi/metadata' do
+    subject { post '/auth/suomifi/metadata' }
 
     let(:response_xml) { Nokogiri::XML(last_response.body) }
     let(:request_attribute_nodes) do
