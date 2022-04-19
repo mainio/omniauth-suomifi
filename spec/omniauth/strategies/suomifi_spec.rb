@@ -29,6 +29,10 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
   let(:sp_entity_id) { 'https://www.service.fi/auth/suomifi/metadata' }
   let(:scope_of_data) { :medium_extensive }
   let(:strategy) { [OmniAuth::Strategies::Suomifi, saml_options] }
+  let(:thread) { double(
+    join: nil,
+    alive?: false
+  )}
 
   before do
     # Stub the metadata to return the locally stored metadata for easier
@@ -40,6 +44,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
     ).to_return(status: 200, body: File.new(
       support_filepath('idp_metadata.xml')
     ), headers: {})
+    allow(Thread).to receive(:new).and_yield.and_return(thread)
   end
 
   describe '#initialize' do

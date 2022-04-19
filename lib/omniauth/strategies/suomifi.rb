@@ -488,6 +488,9 @@ module OmniAuth
         }
       end
 
+      attr_accessor :options
+      attr_reader :suomifi_thread
+
       def initialize(app, *args, &block)
         super
 
@@ -511,15 +514,18 @@ module OmniAuth
         # fetched from the metadata. The options array is the one that gets
         # priority in case it overrides some of the metadata or locally defined
         # option values.
-        @options = OmniAuth::Strategy::Options.new(
-          suomifi_options.merge(options)
-        )
+        @suomifi_thread = Thread.new do
+          @options = OmniAuth::Strategy::Options.new(
+            suomifi_options.merge(options)
+          )
+        end
       end
 
       # Override the request phase to be able to pass the locale parameter to
       # the redirect URL. Note that this needs to be the last parameter to
       # be passed to the redirect URL.
       def request_phase
+        suomifi_thread.join if suomifi_thread.alive?
         authn_request = OneLogin::RubySaml::Authrequest.new
         locale = locale_for_authn_request
 
