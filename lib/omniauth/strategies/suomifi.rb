@@ -610,7 +610,7 @@ module OmniAuth
         when :test
           'https://testi.apro.tunnistus.fi/static/metadata/idp-metadata.xml'
         else # :production
-          'https://tunnistus.suomi.fi/static/metadata/idp-metadata-tunnistautuminen.xml'
+          'https://tunnistus.suomi.fi/static/metadata/idp-metadata.xml'
         end
       end
 

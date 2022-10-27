@@ -161,7 +161,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
         # correct endpoint.
         stub_metadata = stub_request(
           :get,
-          'https://tunnistus.suomi.fi/static/metadata/idp-metadata-tunnistautuminen.xml'
+          'https://tunnistus.suomi.fi/static/metadata/idp-metadata.xml'
         ).to_return(status: 200, body: File.new(
           support_filepath('idp_metadata.xml')
         ), headers: {})
