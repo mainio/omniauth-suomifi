@@ -40,7 +40,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
     # OmniAuth strategy is initialized.
     stub_request(
       :get,
-      'https://testi.apro.tunnistus.fi/static/metadata/idp-metadata.xml'
+      'https://static.apro.tunnistus.fi/static/metadata/idp-metadata.xml'
     ).to_return(status: 200, body: File.new(
       support_filepath('idp_metadata.xml')
     ), headers: {})
