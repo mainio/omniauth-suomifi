@@ -608,7 +608,7 @@ module OmniAuth
       def idp_metadata_url
         case options.mode
         when :test
-          'https://testi.apro.tunnistus.fi/static/metadata/idp-metadata.xml'
+          'https://static.apro.tunnistus.fi/static/metadata/idp-metadata.xml'
         else # :production
           'https://tunnistus.suomi.fi/static/metadata/idp-metadata.xml'
         end
