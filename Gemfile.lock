@@ -43,7 +43,7 @@ GEM
       ruby-saml (~> 1.12)
     public_suffix (5.0.1)
     racc (1.6.2)
-    rack (2.2.6.2)
+    rack (2.2.7)
     rack-protection (3.0.5)
       rack
     rack-test (1.1.0)
