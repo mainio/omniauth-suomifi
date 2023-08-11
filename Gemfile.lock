@@ -16,10 +16,8 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.8.1)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
-    codecov (0.6.0)
-      simplecov (>= 0.15, < 0.22)
     concurrent-ruby (1.2.2)
     crack (0.4.5)
       rexml
@@ -29,8 +27,8 @@ GEM
     hashie (5.0.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
-    mini_portile2 (2.8.1)
-    minitest (5.18.1)
+    mini_portile2 (2.8.4)
+    minitest (5.19.0)
     nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -41,34 +39,37 @@ GEM
     omniauth-saml (2.1.0)
       omniauth (~> 2.0)
       ruby-saml (~> 1.12)
-    public_suffix (5.0.1)
-    racc (1.6.2)
-    rack (2.2.7)
-    rack-protection (3.0.5)
-      rack
+    public_suffix (5.0.3)
+    racc (1.7.1)
+    rack (2.2.8)
+    rack-protection (3.1.0)
+      rack (~> 2.2, >= 2.2.4)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rake (13.0.6)
-    rexml (3.2.5)
+    rexml (3.2.6)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
       rspec-mocks (~> 3.12.0)
-    rspec-core (3.12.0)
+    rspec-core (3.12.2)
       rspec-support (~> 3.12.0)
-    rspec-expectations (3.12.2)
+    rspec-expectations (3.12.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
-    rspec-mocks (3.12.3)
+    rspec-mocks (3.12.6)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
-    rspec-support (3.12.0)
+    rspec-support (3.12.1)
     ruby-saml (1.13.0)
       nokogiri (>= 1.10.5)
       rexml
     simplecov (0.19.1)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
+    simplecov-cobertura (2.1.0)
+      rexml
+      simplecov (~> 0.19)
     simplecov-html (0.12.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -83,21 +84,21 @@ GEM
       xmlmapper (>= 0.7.3)
     xmlmapper (0.8.1)
       nokogiri (~> 1.11)
-    zeitwerk (2.6.8)
+    zeitwerk (2.6.11)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  codecov
   nokogiri (>= 1.10.4)
   omniauth-suomifi!
   rack-test (~> 1.1.0)
   rake (~> 13.0)
   rspec (~> 3.9)
   simplecov (~> 0.19.0)
+  simplecov-cobertura
   webmock (~> 3.6, >= 3.6.2)
   xmlenc (~> 0.7.1)
 
 BUNDLED WITH
-   2.2.29
+   1.17.2

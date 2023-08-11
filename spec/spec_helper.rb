@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
-require 'simplecov' if ENV['SIMPLECOV'] || ENV['CODECOV']
-if ENV['CODECOV']
-  require 'codecov'
-  SimpleCov.formatter = SimpleCov::Formatter::Codecov
-end
-
+require 'simplecov'
 require 'omniauth-suomifi'
 require 'omniauth-suomifi/test'
 require 'webmock/rspec'
