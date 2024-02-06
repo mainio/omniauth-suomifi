@@ -529,6 +529,8 @@ module OmniAuth
         authn_request = OneLogin::RubySaml::Authrequest.new
         locale = locale_for_authn_request
 
+        session["saml_redirect_url"] = request.params["redirect_url"]
+
         with_settings do |settings|
           url = authn_request.create(settings, additional_params_for_authn_request)
           url += "&locale=#{CGI.escape(locale)}" unless locale.nil?
