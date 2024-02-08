@@ -715,6 +715,76 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       end
     end
 
+    context 'when request is a logout request without saml_uid passed through the session' do
+      subject do
+        post('/auth/suomifi/slo', params)
+      end
+
+      let(:params) { {'SAMLRequest' => base64_file('logout_request.xml')} }
+
+      let(:app_response) { 'App response' }
+      let(:logout_request) { last_request.env['omniauth.saml_request'] }
+      let(:logout_response) { URI.parse(last_request.env['omniauth.saml_response']) }
+      let(:logout_response_query) { Rack::Utils.parse_query(logout_response.query) }
+      let(:actual_relay_state) { logout_response_query['RelayState'] }
+
+      context 'when logout request is valid' do
+        before { subject }
+
+        it 'should call the application' do
+          expect(last_response.body).to eq(app_response)
+          expect(logout_request).to be_a(OneLogin::RubySaml::SloLogoutrequest)
+          expect(logout_response.scheme).to eq("https")
+          expect(logout_response.host).to eq("testi.apro.tunnistus.fi")
+          expect(logout_response.path).to eq("/idp/profile/SAML2/Redirect/SLO")
+          expect(actual_relay_state).to eq('/')
+        end
+      end
+
+      context 'when RelayState is provided' do
+        let(:params) { {'SAMLRequest' => base64_file('logout_request.xml'), 'RelayState' => relay_state} }
+        let(:relay_state) { nil }
+
+        before { subject }
+
+        context 'with a valid value' do
+          let(:relay_state) { '/local/path/to/app' }
+
+          it 'should add the RelayState parameter to the response' do
+            expect(last_response.body).to eq(app_response)
+            expect(actual_relay_state).to eq(relay_state)
+          end
+        end
+
+        context 'with a full HTTP URI' do
+          let(:relay_state) { 'http://www.mainiotech.fi/vuln' }
+
+          it 'should add root URI as the RelayState parameter to the response' do
+            expect(last_response.body).to eq(app_response)
+            expect(actual_relay_state).to eq('/')
+          end
+        end
+
+        context 'with a full HTTPS URI' do
+          let(:relay_state) { 'https://www.mainiotech.fi/vuln' }
+
+          it 'should add root URI as the RelayState parameter to the response' do
+            expect(last_response.body).to eq(app_response)
+            expect(actual_relay_state).to eq('/')
+          end
+        end
+
+        context 'with a non-protocol URI' do
+          let(:relay_state) { '//www.mainiotech.fi/vuln' }
+
+          it 'should add root URI as the RelayState parameter to the response' do
+            expect(last_response.body).to eq(app_response)
+            expect(actual_relay_state).to eq('/')
+          end
+        end
+      end
+    end
+
     context 'when sp initiated SLO' do
       let(:params) { nil }
 

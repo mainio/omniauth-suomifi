@@ -529,7 +529,7 @@ module OmniAuth
         authn_request = OneLogin::RubySaml::Authrequest.new
         locale = locale_for_authn_request
 
-        session["saml_redirect_url"] = request.params["redirect_url"]
+        session['saml_redirect_url'] = request.params['redirect_url']
 
         with_settings do |settings|
           url = authn_request.create(settings, additional_params_for_authn_request)
@@ -561,6 +561,49 @@ module OmniAuth
       end
 
     private
+
+      # The single log-out (SLO) in Suomi.fi is initiated in an iframe within
+      # the single logout page at Suomi.fi side. Therefore, due to browser
+      # restrictions, it is not possible to transfer session related data to the
+      # service from that page because it would require 3rd party cookies which
+      # are restricted by browsers.
+      #
+      # Therefore, the SLO request needs to be handled at the service's side by
+      # storing the Suomi.fi sessions in a database and then comparing the SAML
+      # uid of the SLO request to the values stored witin the database to log
+      # out the user who requested the logout. There is no other way to transfer
+      # this information from the
+      #
+      # The default functionality within the `omniauth-saml` strategy relies on
+      # the session variables to compare the SAML uid during the SLO request but
+      # this is not possible with Suomi.fi when the 3rd party cookies are
+      # prevented by the browser.
+      def handle_logout_request(raw_request, settings)
+        # If the "saml_uid" is set, the logout request was initiated by the
+        # application itself. If not, the code below calls the application which
+        # can do the validation against the database where the sessions are
+        # stored.
+        return super if session["saml_uid"]
+
+        # Otherwise, the application itself needs to handle the logout because
+        # this is not happening within the same session that the user has
+        # currently open at the website.
+        logout_request = OneLogin::RubySaml::SloLogoutrequest.new(
+          raw_request,
+          { settings: settings, get_params: @request.params }
+        )
+        raise OmniAuth::Strategies::SAML::ValidationError.new("SAML failed to process LogoutRequest") unless logout_request.is_valid?
+
+        @env['omniauth.saml_request'] = logout_request
+
+        # The SAML request needs to be validated at the application side and
+        # then the user needs to be redirected to the
+        logout_request_id = logout_request.id
+        logout_response = OneLogin::RubySaml::SloLogoutresponse.new.create(settings, logout_request_id, nil, RelayState: slo_relay_state)
+        @env['omniauth.saml_response'] = logout_response
+
+        call_app!
+      end
 
       # Suomi.fi requires that the service provider needs to end the local user
       # session BEFORE sending the logout request to the identity provider.
