@@ -26,18 +26,18 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'omniauth-saml', '~> 2.0'
-  spec.add_dependency 'ruby-saml', '~> 1.13.0'
+  spec.add_dependency 'omniauth-saml', '~> 2.1'
+  spec.add_dependency 'ruby-saml', '~> 1.16.0'
 
   # Basic development dependencies
-  spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'rspec', '~> 3.9'
+  spec.add_development_dependency 'rake', '~> 13.1'
+  spec.add_development_dependency 'rspec', '~> 3.13'
 
   # Testing the requests
-  spec.add_development_dependency 'rack-test', '~> 1.1.0'
-  spec.add_development_dependency 'webmock', '~> 3.6', '>= 3.6.2'
-  spec.add_development_dependency 'xmlenc', '~> 0.7.1'
+  spec.add_development_dependency 'rack-test', '~> 2.1.0'
+  spec.add_development_dependency 'webmock', '~> 3.20'
+  spec.add_development_dependency 'xmlenc', '~> 0.8.0'
 
   # Code coverage
-  spec.add_development_dependency 'simplecov', '~> 0.19.0'
+  spec.add_development_dependency 'simplecov', '~> 0.22.0'
 end
