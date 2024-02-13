@@ -103,4 +103,4 @@ DEPENDENCIES
   xmlenc (~> 0.7.1)
 
 BUNDLED WITH
-   1.17.2
+   2.4.12
