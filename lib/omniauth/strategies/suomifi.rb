@@ -572,7 +572,7 @@ module OmniAuth
       # storing the Suomi.fi sessions in a database and then comparing the SAML
       # uid of the SLO request to the values stored witin the database to log
       # out the user who requested the logout. There is no other way to transfer
-      # this information from the
+      # this information from the SLO page.
       #
       # The default functionality within the `omniauth-saml` strategy relies on
       # the session variables to compare the SAML uid during the SLO request but
@@ -583,7 +583,7 @@ module OmniAuth
         # application itself. If not, the code below calls the application which
         # can do the validation against the database where the sessions are
         # stored.
-        return super if session["saml_uid"]
+        return super if session['saml_uid']
 
         # Otherwise, the application itself needs to handle the logout because
         # this is not happening within the same session that the user has
@@ -592,7 +592,7 @@ module OmniAuth
           raw_request,
           { settings: settings, get_params: @request.params }
         )
-        raise OmniAuth::Strategies::SAML::ValidationError.new("SAML failed to process LogoutRequest") unless logout_request.is_valid?
+        raise OmniAuth::Strategies::SAML::ValidationError.new('SAML failed to process LogoutRequest') unless logout_request.is_valid?
 
         @env['omniauth.saml_request'] = logout_request
 
