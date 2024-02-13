@@ -458,7 +458,7 @@ module OmniAuth
         eidas_id = find_attribute_by(
           ['http://eidas.europa.eu/attributes/naturalperson/PersonIdentifier']
         )
-        hash_salt = begin
+        hash_salt =
           if options.uid_salt
             options.uid_salt
           elsif defined?(::Rails) && ::Rails.application
@@ -466,14 +466,13 @@ module OmniAuth
           else
             ''
           end
-        end
 
         if !electronic_id.nil?
-          'FINUID:' + electronic_id
+          "FINUID:#{electronic_id}"
         elsif !national_id.nil?
-          'FIHETU:' + Digest::MD5.hexdigest("FI:#{national_id}:#{hash_salt}")
+          "FIHETU:#{Digest::MD5.hexdigest("FI:#{national_id}:#{hash_salt}")}"
         elsif !eidas_id.nil?
-          'EIDASPID:' + Digest::MD5.hexdigest("EIDAS:#{eidas_id}:#{hash_salt}")
+          "EIDASPID:#{Digest::MD5.hexdigest("EIDAS:#{eidas_id}:#{hash_salt}")}"
         else
           @name_id
         end
@@ -491,6 +490,7 @@ module OmniAuth
       attr_accessor :options
       attr_reader :suomifi_thread
 
+      # rubocop:disable Metrics/MethodLength
       def initialize(app, *args, &block)
         super
 
@@ -520,6 +520,7 @@ module OmniAuth
           )
         end
       end
+      # rubocop:enable Metrics/MethodLength
 
       # Override the request phase to be able to pass the locale parameter to
       # the redirect URL. Note that this needs to be the last parameter to
@@ -590,7 +591,7 @@ module OmniAuth
         # currently open at the website.
         logout_request = OneLogin::RubySaml::SloLogoutrequest.new(
           raw_request,
-          { settings: settings, get_params: @request.params }
+          {settings: settings, get_params: @request.params}
         )
         raise OmniAuth::Strategies::SAML::ValidationError.new('SAML failed to process LogoutRequest') unless logout_request.is_valid?
 
@@ -665,6 +666,7 @@ module OmniAuth
         end
       end
 
+      # rubocop:disable Metrics/MethodLength
       def suomifi_options
         idp_metadata_parser = OneLogin::RubySaml::IdpMetadataParser.new
 
@@ -705,6 +707,7 @@ module OmniAuth
 
         settings
       end
+      # rubocop:enable Metrics/MethodLength
 
       # This will return true if the VTJ search (population information system,
       # väestötietojärjestelmä) was successful and information about the person

@@ -29,10 +29,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
   let(:sp_entity_id) { 'https://www.service.fi/auth/suomifi/metadata' }
   let(:scope_of_data) { :medium_extensive }
   let(:strategy) { [OmniAuth::Strategies::Suomifi, saml_options] }
-  let(:thread) { double(
-    join: nil,
-    alive?: false
-  )}
+  let(:thread) { double(join: nil, alive?: false) }
 
   before do
     # Stub the metadata to return the locally stored metadata for easier
@@ -143,8 +140,8 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       attr_reader :temp_dir
 
       before do
-        File.open(certificate_file, 'w') { |f| f.write(certificate.to_pem) }
-        File.open(private_key_file, 'w') { |f| f.write(private_key.to_pem) }
+        File.write(certificate_file, certificate.to_pem)
+        File.write(private_key_file, private_key.to_pem)
       end
 
       it 'should read the certificate and private key from the files' do
@@ -343,9 +340,16 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
         end
 
         raw_xml_file = support_filepath("#{xml}.xml")
-        xml_signed = begin
-          if !custom_saml_attributes.empty?
-            xml_io = IO.read(raw_xml_file)
+        xml_signed =
+          if custom_saml_attributes.empty?
+            OmniAuth::Suomifi::Test::Utility.encrypted_signed_xml(
+              raw_xml_file,
+              certificate: certificate,
+              sign_certificate: sign_certificate,
+              sign_private_key: sign_private_key
+            )
+          else
+            xml_io = File.read(raw_xml_file)
             doc = Nokogiri::XML::Document.parse(xml_io)
             statements_node = doc.root.at_xpath(
               '//saml2:Assertion//saml2:AttributeStatement',
@@ -387,15 +391,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
               sign_certificate: sign_certificate,
               sign_private_key: sign_private_key
             )
-          else
-            OmniAuth::Suomifi::Test::Utility.encrypted_signed_xml(
-              raw_xml_file,
-              certificate: certificate,
-              sign_certificate: sign_certificate,
-              sign_private_key: sign_private_key
-            )
           end
-        end
 
         saml_response = Base64.encode64(xml_signed)
 
@@ -406,7 +402,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
       end
 
       after :each do
-        Object.send(:remove_const, :Rails) if defined?(::Rails)
+        Object.send(:remove_const, :Rails) if defined?(Rails)
       end
 
       it 'should set the info hash correctly' do
@@ -513,7 +509,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
         # The HETU is already set in the sample XML
         it 'should set the uid to hashed HETU ID' do
           expect(auth_hash['uid']).to eq(
-            'FIHETU:' + Digest::MD5.hexdigest("FI:210281-9988:#{uid_salt}")
+            "FIHETU:#{Digest::MD5.hexdigest("FI:210281-9988:#{uid_salt}")}"
           )
         end
 
@@ -523,7 +519,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
 
           it 'should set the uid to hashed eIDAS PID' do
             expect(auth_hash['uid']).to eq(
-              'FIHETU:' + Digest::MD5.hexdigest("FI:210281-9988:#{rails_salt}")
+              "FIHETU:#{Digest::MD5.hexdigest("FI:210281-9988:#{rails_salt}")}"
             )
           end
         end
@@ -533,7 +529,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
 
           it 'should set the uid to hashed eIDAS PID' do
             expect(auth_hash['uid']).to eq(
-              'FIHETU:' + Digest::MD5.hexdigest('FI:210281-9988:')
+              "FIHETU:#{Digest::MD5.hexdigest('FI:210281-9988:')}"
             )
           end
         end
@@ -555,7 +551,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
 
         it 'should set the uid to hashed eIDAS PID' do
           expect(auth_hash['uid']).to eq(
-            'EIDASPID:' + Digest::MD5.hexdigest("EIDAS:28493196Z:#{uid_salt}")
+            "EIDASPID:#{Digest::MD5.hexdigest("EIDAS:28493196Z:#{uid_salt}")}"
           )
         end
 
@@ -565,7 +561,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
 
           it 'should set the uid to hashed eIDAS PID' do
             expect(auth_hash['uid']).to eq(
-              'EIDASPID:' + Digest::MD5.hexdigest("EIDAS:28493196Z:#{rails_salt}")
+              "EIDASPID:#{Digest::MD5.hexdigest("EIDAS:28493196Z:#{rails_salt}")}"
             )
           end
         end
@@ -575,7 +571,7 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
 
           it 'should set the uid to hashed eIDAS PID' do
             expect(auth_hash['uid']).to eq(
-              'EIDASPID:' + Digest::MD5.hexdigest('EIDAS:28493196Z:')
+              "EIDASPID:#{Digest::MD5.hexdigest('EIDAS:28493196Z:')}"
             )
           end
         end
@@ -734,9 +730,9 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
         it 'should call the application' do
           expect(last_response.body).to eq(app_response)
           expect(logout_request).to be_a(OneLogin::RubySaml::SloLogoutrequest)
-          expect(logout_response.scheme).to eq("https")
-          expect(logout_response.host).to eq("testi.apro.tunnistus.fi")
-          expect(logout_response.path).to eq("/idp/profile/SAML2/Redirect/SLO")
+          expect(logout_response.scheme).to eq('https')
+          expect(logout_response.host).to eq('testi.apro.tunnistus.fi')
+          expect(logout_response.path).to eq('/idp/profile/SAML2/Redirect/SLO')
           expect(actual_relay_state).to eq('/')
         end
       end

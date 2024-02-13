@@ -7,9 +7,10 @@ require 'omniauth-suomifi/version'
 Gem::Specification.new do |spec|
   spec.name = 'omniauth-suomifi'
   spec.version = OmniAuth::Suomifi::VERSION
-  spec.required_ruby_version = ">= 2.5"
+  spec.required_ruby_version = '>= 2.6'
   spec.authors = ['Antti Hukkanen']
   spec.email = ['antti.hukkanen@mainiotech.fi']
+  spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.summary = 'Provides a Suomi.fi strategy for OmniAuth.'
   spec.description = 'Suomi.fi e-Identification service integration for OmniAuth.'

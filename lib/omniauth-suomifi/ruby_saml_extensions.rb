@@ -28,6 +28,7 @@ OneLogin::RubySaml::Utils.class_eval do
   # @param symmetric_key [String] The symetric key used to encrypt the text
   # @param algorithm [String]     The encrypted algorithm
   # @return [String] The deciphered text
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
   def self.retrieve_plaintext(cipher_text, symmetric_key, algorithm)
     case algorithm
     when 'http://www.w3.org/2001/04/xmlenc#tripledes-cbc' then cipher = OpenSSL::Cipher.new('DES-EDE3-CBC').decrypt
@@ -43,7 +44,7 @@ OneLogin::RubySaml::Utils.class_eval do
 
     if cipher
       iv_len = cipher.iv_len
-      data = cipher_text[iv_len..-1]
+      data = cipher_text[iv_len..]
       cipher.padding = 0
       cipher.key = symmetric_key
       cipher.iv = cipher_text[0..iv_len - 1]
@@ -58,7 +59,7 @@ OneLogin::RubySaml::Utils.class_eval do
       auth_cipher.key = symmetric_key
       auth_cipher.iv = cipher_text[0..iv_len - 1]
       auth_cipher.auth_data = ''
-      auth_cipher.auth_tag = cipher_text[text_len - tag_len..-1]
+      auth_cipher.auth_tag = cipher_text[text_len - tag_len..]
       assertion_plaintext = auth_cipher.update(data)
       assertion_plaintext << auth_cipher.final
     elsif rsa
@@ -69,4 +70,5 @@ OneLogin::RubySaml::Utils.class_eval do
       cipher_text
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
 end

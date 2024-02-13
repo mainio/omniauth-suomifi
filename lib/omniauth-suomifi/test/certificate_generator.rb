@@ -17,14 +17,14 @@ module OmniAuth
             cert = OpenSSL::X509::Certificate.new
             cert.subject = cert.issuer = OpenSSL::X509::Name.parse(subject)
             cert.not_before = Time.now
-            cert.not_after = Time.now + 365 * 24 * 60 * 60
+            cert.not_after = Time.now + (365 * 24 * 60 * 60)
             cert.public_key = public_key
             cert.serial = 0x0
             cert.version = 2
 
             inject_certificate_extensions(cert)
 
-            cert.sign(private_key, OpenSSL::Digest::SHA1.new)
+            cert.sign(private_key, OpenSSL::Digest.new('SHA1'))
 
             cert
           end

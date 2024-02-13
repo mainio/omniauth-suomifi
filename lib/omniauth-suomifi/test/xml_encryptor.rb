@@ -33,7 +33,7 @@ module OmniAuth
         end
 
         def self.encrypted_xml(raw_xml_file, cert, sign_cert, sign_key)
-          raw_xml = IO.read(raw_xml_file)
+          raw_xml = File.read(raw_xml_file)
           encrypted_xml_from_string(raw_xml, cert, sign_cert, sign_key)
         end
 
@@ -53,7 +53,7 @@ module OmniAuth
           template_path = Utility.template_filepath(
             'encrypted_data_template.xml'
           )
-          template_io = IO.read(template_path)
+          template_io = File.read(template_path)
 
           Nokogiri::XML::Document.parse(template_io).root
         end

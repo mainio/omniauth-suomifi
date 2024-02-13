@@ -1,19 +1,24 @@
 AllCops:
   TargetRubyVersion: 2.6
+  NewCops: enable
 
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 
 Layout/DotPosition:
   EnforcedStyle: trailing
 
+Layout/LineLength:
+  AllowURI: true
+  Enabled: false
+
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Enabled: false
 
 Metrics/BlockLength:
@@ -23,10 +28,6 @@ Metrics/BlockNesting:
   Max: 2
 
 Metrics/ClassLength:
-  Enabled: false
-
-Metrics/LineLength:
-  AllowURI: true
   Enabled: false
 
 Metrics/MethodLength:

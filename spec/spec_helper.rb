@@ -26,7 +26,7 @@ def support_filepath(filename)
 end
 
 def support_file_io(filename)
-  IO.read(support_filepath(filename))
+  File.read(support_filepath(filename))
 end
 
 def base64_file(filename)
