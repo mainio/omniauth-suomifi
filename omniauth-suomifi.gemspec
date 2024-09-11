@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'omniauth-saml', '~> 2.1'
-  spec.add_dependency 'ruby-saml', '~> 1.16.0'
+  spec.add_dependency 'ruby-saml', '~> 1.17'
 
   # Basic development dependencies
   spec.add_development_dependency 'rake', '~> 13.1'

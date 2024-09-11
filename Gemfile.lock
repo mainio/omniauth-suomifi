@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    omniauth-suomifi (0.7.0)
+    omniauth-suomifi (0.8.0)
       omniauth-saml (~> 2.1)
-      ruby-saml (~> 1.16.0)
+      ruby-saml (~> 1.17)
 
 GEM
   remote: https://rubygems.org/
@@ -63,7 +63,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.0)
-    ruby-saml (1.16.0)
+    ruby-saml (1.17.0)
       nokogiri (>= 1.13.10)
       rexml
     simplecov (0.22.0)
