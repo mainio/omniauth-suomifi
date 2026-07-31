@@ -332,10 +332,8 @@ describe OmniAuth::Strategies::Suomifi, type: :strategy do
         if rails_salt
           rails = double
           application = double
-          secrets = double
           allow(rails).to receive(:application).and_return(application)
-          allow(application).to receive(:secrets).and_return(secrets)
-          allow(secrets).to receive(:secret_key_base).and_return(rails_salt)
+          allow(application).to receive(:secret_key_base).and_return(rails_salt)
           Object.const_set(:Rails, rails)
         end
 
