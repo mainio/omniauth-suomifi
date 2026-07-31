@@ -448,7 +448,7 @@ module OmniAuth
       # birth, gender, etc.). Please provide a salt with the `uid_salt`
       # configuration option for proper hashing of the strings. For Rails, it
       # will be automatically set by
-      # `Rails.application.secrets.secret_key_base`.
+      # `Rails.application.secret_key_base`.
       #
       # Finally, fallback to the SAML NameID which is only unique per session.
       # This should not happen with any valid authentication requests.
@@ -462,7 +462,7 @@ module OmniAuth
           if options.uid_salt
             options.uid_salt
           elsif defined?(::Rails) && ::Rails.application
-            ::Rails.application.secrets.secret_key_base
+            ::Rails.application.secret_key_base
           else
             ''
           end

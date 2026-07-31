@@ -198,7 +198,7 @@ Devise.setup do |config|
     # is why it is generated from the personal identity codes. That code may,
     # however, contain personal data such as date of birth or gender, which is
     # why it is hashed using this salt. For Rails, this defaults to
-    # `Rails.application.secrets.secret_key_base` and does not need to be
+    # `Rails.application.secret_key_base` and does not need to be
     # specifically configured.
     uid_salt: 'abcdef123'
 end
