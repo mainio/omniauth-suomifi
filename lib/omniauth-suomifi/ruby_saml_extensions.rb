@@ -47,19 +47,19 @@ OneLogin::RubySaml::Utils.class_eval do
       data = cipher_text[iv_len..]
       cipher.padding = 0
       cipher.key = symmetric_key
-      cipher.iv = cipher_text[0..iv_len - 1]
+      cipher.iv = cipher_text[0..(iv_len - 1)]
       assertion_plaintext = cipher.update(data)
       assertion_plaintext << cipher.final
     elsif auth_cipher
       iv_len = auth_cipher.iv_len
       text_len = cipher_text.length
       tag_len = 16
-      data = cipher_text[iv_len..text_len - 1 - tag_len]
+      data = cipher_text[iv_len..(text_len - 1 - tag_len)]
       auth_cipher.padding = 0
       auth_cipher.key = symmetric_key
-      auth_cipher.iv = cipher_text[0..iv_len - 1]
+      auth_cipher.iv = cipher_text[0..(iv_len - 1)]
       auth_cipher.auth_data = ''
-      auth_cipher.auth_tag = cipher_text[text_len - tag_len..]
+      auth_cipher.auth_tag = cipher_text[(text_len - tag_len)..]
       assertion_plaintext = auth_cipher.update(data)
       assertion_plaintext << auth_cipher.final
     elsif rsa

@@ -482,7 +482,7 @@ module OmniAuth
       # hash for easier access.
       extra do
         {
-          search_success: search_success,
+          search_success: search_success?,
           saml_attributes: saml_attributes
         }
       end
@@ -712,10 +712,11 @@ module OmniAuth
       # This will return true if the VTJ search (population information system,
       # väestötietojärjestelmä) was successful and information about the person
       # was transmitted in the SAML response.
-      def search_success
+      def search_success?
         success_string = find_attribute_by(['urn:oid:1.2.246.517.3002.111.2'])
         success_string == 'true'
       end
+      alias search_success search_success?
 
       def saml_attributes
         {}.tap do |attrs|
