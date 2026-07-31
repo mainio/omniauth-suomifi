@@ -4,12 +4,12 @@ source 'https://rubygems.org'
 
 group :test do
   # Basic development dependencies
-  gem 'rake', '~> 13.1'
+  gem 'rake', '~> 13.4'
   gem 'rspec', '~> 3.13'
 
   # Testing the requests
-  gem 'rack-test', '~> 2.1.0'
-  gem 'webmock', '~> 3.20'
+  gem 'rack-test', '~> 2.2.0'
+  gem 'webmock', '~> 3.26'
   gem 'xmlenc', '~> 0.8.0'
 
   # Code coverage
