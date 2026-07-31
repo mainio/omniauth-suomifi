@@ -7,7 +7,7 @@ require 'omniauth-suomifi/version'
 Gem::Specification.new do |spec|
   spec.name = 'omniauth-suomifi'
   spec.version = OmniAuth::Suomifi::VERSION
-  spec.required_ruby_version = '>= 2.6'
+  spec.required_ruby_version = '>= 3.0'
   spec.authors = ['Antti Hukkanen']
   spec.email = ['antti.hukkanen@mainiotech.fi']
   spec.metadata['rubygems_mfa_required'] = 'true'
@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'omniauth-saml', '~> 2.1'
-  spec.add_dependency 'ruby-saml', '~> 1.17'
+  spec.add_dependency 'ruby-saml', '~> 1.18'
 
   # Basic development dependencies
   spec.add_development_dependency 'rake', '~> 13.1'
