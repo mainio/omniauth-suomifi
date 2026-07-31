@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    omniauth-suomifi (0.8.0)
+    omniauth-suomifi (0.9.0)
       omniauth-saml (~> 2.1)
       ruby-saml (~> 1.18)
 
